@@ -30,30 +30,41 @@ head(activity)
 
 
 ## What is mean total number of steps taken per day?
-- Mean number of steps: 37.38
-- Median number of steps: 0
+
+```r
+daily_activity = activity[!is.na(activity),] %>%
+  group_by(date) %>%
+  summarise(daily_steps=sum(steps))
+```
+
+```
+## Warning: Factor `date` contains implicit NA, consider using
+## `forcats::fct_explicit_na`
+```
+- Mean number of steps: 1.076619\times 10^{4}
+- Median number of steps: 1.0765\times 10^{4}
 
 
 ```r
-hist(activity$steps, main="Histogram: Total Number of Steps per day")
+hist(daily_activity$daily_steps, main="Histogram: Total Number of Steps per day")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
-
-```r
-mean(activity$steps, na.rm=TRUE)
-```
-
-```
-## [1] 37.3826
-```
+![](PA1_template_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
 
 ```r
-median(activity$steps, na.rm=TRUE)
+mean(daily_activity$daily_steps, na.rm=TRUE)
 ```
 
 ```
-## [1] 0
+## [1] 10766.19
+```
+
+```r
+median(daily_activity$daily_steps, na.rm=TRUE)
+```
+
+```
+## [1] 10765
 ```
 
 ## What is the average daily activity pattern?
@@ -75,7 +86,7 @@ with(summary_activity,
 )
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
+![](PA1_template_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
 
 2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
@@ -139,25 +150,37 @@ str(activity)
 4. Historgram, mean and median of clean dataset
 
 ```r
-hist(clean_activity$steps, main="Histogram: Total Number of Steps per day")
-```
-
-![](PA1_template_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
-
-```r
-mean(clean_activity$steps, na.rm=TRUE)
+daily_clean_activity = clean_activity[!is.na(activity),] %>%
+  group_by(date) %>%
+  summarise(steps=sum(steps))
 ```
 
 ```
-## [1] 37.3826
+## Warning: Factor `date` contains implicit NA, consider using
+## `forcats::fct_explicit_na`
 ```
+
 
 ```r
-median(clean_activity$steps, na.rm=TRUE)
+hist(daily_clean_activity$steps, main="Histogram: Total Number of Steps per day")
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
+
+```r
+mean(daily_clean_activity$steps, na.rm=TRUE)
 ```
 
 ```
-## [1] 0
+## [1] 10766.19
+```
+
+```r
+median(daily_clean_activity$steps, na.rm=TRUE)
+```
+
+```
+## [1] 10765
 ```
 - change in mean: 0
 - change in median: 0
@@ -200,4 +223,4 @@ xyplot(AvgSteps ~ interval | weekend,
        )
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
+![](PA1_template_files/figure-html/unnamed-chunk-12-1.png)<!-- -->

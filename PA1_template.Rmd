@@ -19,13 +19,18 @@ head(activity)
 
 
 ## What is mean total number of steps taken per day?
-- Mean number of steps: `r round(mean(activity$steps, na.rm=TRUE), 2)`
-- Median number of steps: `r round(median(activity$steps, na.rm=TRUE), 2)`
+```{r}
+daily_activity = activity[!is.na(activity),] %>%
+  group_by(date) %>%
+  summarise(daily_steps=sum(steps))
+```
+- Mean number of steps: `r round(mean(daily_activity$daily_steps, na.rm=TRUE), 2)`
+- Median number of steps: `r round(median(daily_activity$daily_steps, na.rm=TRUE), 2)`
 
 ```{r echo=TRUE}
-hist(activity$steps, main="Histogram: Total Number of Steps per day")
-mean(activity$steps, na.rm=TRUE)
-median(activity$steps, na.rm=TRUE)
+hist(daily_activity$daily_steps, main="Histogram: Total Number of Steps per day")
+mean(daily_activity$daily_steps, na.rm=TRUE)
+median(daily_activity$daily_steps, na.rm=TRUE)
 ```
 
 ## What is the average daily activity pattern?
@@ -79,14 +84,20 @@ str(clean_activity)
 str(activity)
 ```
 4. Historgram, mean and median of clean dataset
+```{r}
+daily_clean_activity = clean_activity[!is.na(activity),] %>%
+  group_by(date) %>%
+  summarise(steps=sum(steps))
+```
+
 ```{r echo=TRUE}
-hist(clean_activity$steps, main="Histogram: Total Number of Steps per day")
-mean(clean_activity$steps, na.rm=TRUE)
-median(clean_activity$steps, na.rm=TRUE)
+hist(daily_clean_activity$steps, main="Histogram: Total Number of Steps per day")
+mean(daily_clean_activity$steps, na.rm=TRUE)
+median(daily_clean_activity$steps, na.rm=TRUE)
 
 ```
-- change in mean: `r mean(clean_activity$steps, na.rm=TRUE) - mean(activity$steps, na.rm=TRUE)`
-- change in median: `r median(clean_activity$steps, na.rm=TRUE) - median(activity$steps, na.rm=TRUE)`
+- change in mean: `r mean(daily_clean_activity$steps, na.rm=TRUE) - mean(daily_activity$daily_steps, na.rm=TRUE)`
+- change in median: `r median(daily_clean_activity$steps, na.rm=TRUE) - median(daily_activity$daily_steps, na.rm=TRUE)`
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
